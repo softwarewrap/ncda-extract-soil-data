@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+/// A parsed soil report.
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct SoilReport {
     #[serde(rename = "ReportNumber")]
     report_number: String,
@@ -12,24 +13,44 @@ pub struct SoilReport {
     samples: Vec<Sample>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Sample {
-    SampleId: String,
-    LimeHistory: String,
-    Crop1: String,
-    Crop2: String,
-    Crop1LimeRecommendations: String,
-    Crop2LimeRecommendations: String,
-    pH: f32,
-    NpkFertilizerRecommendations: String,
-    PhosphorusIndex: u32,
-    PotassiumIndex: u32,
-    AdditionalTestResults: AdditionalTestResults,
+    #[serde(rename = "SampleId")]
+    sample_id: String,
+
+    #[serde(rename = "LimeHistory")]
+    lime_history: String,
+
+    #[serde(rename = "Crop1")]
+    crop1: String,
+
+    #[serde(rename = "Crop2")]
+    crop2: String,
+
+    #[serde(rename = "Crop1LimeRecommendations")]
+    crop1_lime_recommendations: String,
+
+    #[serde(rename = "Crop2LimeRecommendations")]
+    crop2_lime_recommendations: String,
+
+    #[serde(rename = "pH")]
+    ph: f32,
+
+    #[serde(rename = "NpkFertilizerRecommendations")]
+    npk_fertilizer_recommendations: String,
+
+    #[serde(rename = "PhosphorusIndex")]
+    phosphorus_index: u32,
+
+    #[serde(rename = "PotassiumIndex")]
+    potassium_index: u32,
+
+    #[serde(rename = "AdditionalTestResults")]
+    additional_test_results: AdditionalTestResults,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq)]
 pub struct AdditionalTestResults {
-
     #[serde(rename = "HmPercent")]
     hm_percent: Option<f32>,
 
@@ -49,5 +70,5 @@ pub struct AdditionalTestResults {
     cu_i: Option<u32>,
 
     #[serde(rename = "S-I")]
-    s_i: Option<u32>
+    s_i: Option<u32>,
 }

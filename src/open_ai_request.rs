@@ -24,13 +24,11 @@ pub struct Content {
 #[serde(untagged)]
 pub enum ContentData {
     Text { text: String },
-    ImageUrl {
-        image_url: ImageUrl
-    },
+    ImageUrl { image_url: ImageUrl },
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ImageUrl {
     pub url: String,
-    pub detail: String
+    pub detail: String,
 }
