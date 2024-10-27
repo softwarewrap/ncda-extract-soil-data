@@ -2,14 +2,15 @@
 #![forbid(unsafe_code)]
 #![deny(missing_docs)]
 
+pub mod error;
 mod open_ai_request;
 mod open_ai_response;
 mod soil_report;
 
+use crate::error::{Error, InvalidResponseError, Result};
 use crate::open_ai_request::{Content, ContentData, ImageUrl, Message, OpenAIRequest};
 use crate::open_ai_response::OpenAIResponse;
 pub use crate::soil_report::SoilReport;
-use anyhow::{anyhow, Result};
 use base64::prelude::BASE64_STANDARD;
 use base64::Engine;
 use once_cell::sync::Lazy;
@@ -137,21 +138,16 @@ async fn process_soil_report(images: Vec<Vec<u8>>, open_ai_key: &str) -> Result<
 
     if response.status().is_success() {
         let api_response = response.json::<OpenAIResponse>().await?;
+
         match get_first_message_content(&api_response) {
             Some(text) => match extract_json(text) {
-                Some(json) => {
-                    let report: SoilReport = serde_json::from_str(&json).unwrap();
-                    Ok(report)
-                }
-                None => Err(anyhow!(
-                    "Unable to location the json section of the response"
-                )),
+                Some(json) => Ok(serde_json::from_str::<SoilReport>(&json)?),
+                None => Err(Error::InvalidResponse(InvalidResponseError::NoJsonSection)),
             },
-
-            None => Err(anyhow!("Invalid json response")),
+            None => Err(Error::InvalidResponse(InvalidResponseError::NoMessages)),
         }
     } else {
         let error_text = response.text().await?;
-        Err(anyhow!(error_text))
+        Err(Error::OpenAIError(error_text))
     }
 }

@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// A parsed soil report.
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SoilReport {
     #[serde(rename = "ReportNumber")]
     report_number: String,
@@ -13,7 +13,7 @@ pub struct SoilReport {
     samples: Vec<Sample>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Sample {
     #[serde(rename = "SampleId")]
     sample_id: String,
@@ -49,7 +49,7 @@ pub struct Sample {
     additional_test_results: AdditionalTestResults,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct AdditionalTestResults {
     #[serde(rename = "HmPercent")]
     hm_percent: Option<f32>,

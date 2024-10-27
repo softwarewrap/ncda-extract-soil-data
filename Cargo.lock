@@ -953,7 +953,6 @@ dependencies = [
 name = "ncda-extract-soil-data"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "base64",
  "image",
  "once_cell",
@@ -962,6 +961,7 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "thiserror",
 ]
 
 [[package]]
